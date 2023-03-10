@@ -11,6 +11,7 @@
         Icon="/Images/bank-building.png"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
+    
     <Window.Background>
         <LinearGradientBrush>
             <GradientStop Color="Black" Offset="0"/>
@@ -46,12 +47,14 @@
 
                 <TextBox Grid.Row="1"
                          Style="{StaticResource textbox_sytle}"
+                         Text="{Binding PANCart}"
                          />
             </Grid>
 
             <Button Grid.Column="1"
                     Style="{StaticResource btnStyle}"
                     ToolTip="Load Data"
+                    Command="{Binding LoadDataCommand}"
                     >
                 <Ellipse Height="70"
                          VerticalAlignment="Center"
