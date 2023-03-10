@@ -67,11 +67,13 @@ namespace Synchronization_Homework.Domain.ViewModels
 
 
         private readonly AccountRepository _accountRepository;
+        private readonly IRepository<Transfer> _transferRepository;
 
 
         public MainViewModel()
         {
             _accountRepository = new AccountRepository();
+            _transferRepository = new TransferRepository();
 
             LoadDataCommand = new RelayCommand((O) =>
             {
@@ -79,7 +81,7 @@ namespace Synchronization_Homework.Domain.ViewModels
                 {
                     var customer = _accountRepository.GetDataForPan(PANCart);
                     HumanName = customer.Name;
-                    HumanSurname= customer.Surname;
+                    HumanSurname = customer.Surname;
                     HesabdakiMebleg = _accountRepository.GetDataForPanForAccount(PANCart).Balance.ToString();
 
                 });
@@ -88,7 +90,28 @@ namespace Synchronization_Homework.Domain.ViewModels
 
             TransferCommand = new RelayCommand((O) =>
             {
+                Thread thread = new Thread(() =>
+                {
+                    var account = _accountRepository.GetDataForPanForAccount(PANCart);
+                    account.Balance -= decimal.Parse(TransferValue);
 
+                    _accountRepository.UpdateData(account);
+
+                    var id = _transferRepository.GetAllData().LastOrDefault().Id;
+
+                    Transfer transfer = new Transfer
+                    {
+                        Id = ++id,
+                        TransferTime = DateTime.Now,
+                        AccountId = account.Id,
+                        Amount = decimal.Parse(TransferValue),
+                        Description = account.Description,
+                    };
+                    _transferRepository.AddData(transfer);
+
+                });
+
+                thread.Start();
             });
         }
     }
