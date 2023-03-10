@@ -111,7 +111,27 @@ namespace Synchronization_Homework.Domain.ViewModels
 
                 });
 
-                thread.Start();
+                //thread.Start();
+
+                Thread thread1 = new Thread((o) =>
+                {
+                    decimal bankValue = 0;
+
+                    var transferValue = decimal.Parse(TransferValue) / 10;
+
+                    while (decimal.Parse(TransferValue) >= 0)
+                    {
+                        TransferValue = (decimal.Parse(TransferValue) - transferValue).ToString();
+                        
+                        Thread.Sleep(1000);
+
+                        BankValue += (decimal.Parse(BankValue) + transferValue).ToString();
+                    }
+
+                });
+
+                thread1.Start();
+
             });
         }
     }
