@@ -140,12 +140,16 @@ namespace Synchronization_Homework.Domain.ViewModels
                         MessageBox.Show($"Transfer Edilen Mebleg menfi ola bilmez!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                         TransferValue = string.Empty;
                     }
+                    else if (decimal.Parse(TransferValue) > decimal.Parse(HesabdakiMebleg))
+                    {
+                        MessageBox.Show($"Transfer Edilen Mebleg Hesabdaki meblegden boyuk ola bilmez!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        TransferValue = string.Empty;
+                    }
                     else
                     {
                         try
                         {
                             decimal bankValue = 0;
-
                             var transferValue = decimal.Parse(TransferValue) / 10;
 
                             while (decimal.Parse(TransferValue) > 0)
@@ -174,6 +178,7 @@ namespace Synchronization_Homework.Domain.ViewModels
                 thread1.Start();
 
             });
+
         }
     }
 }
