@@ -150,6 +150,7 @@
             <Button Grid.Column="1"
                     Style="{StaticResource btnStyle}"
                     ToolTip="Transfer Value"
+                    Command="{Binding TransferCommand}"
                     >
                 <Ellipse Height="70"
                          VerticalAlignment="Center"

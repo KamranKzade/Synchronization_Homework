@@ -58,6 +58,7 @@ namespace Synchronization_Homework.Domain.ViewModels
             set { _bankValue = value;OnPropertyChanged(); }
         }
 
+        public RelayCommand TransferCommand { get; set; }
         public RelayCommand LoadDataCommand { get; set; }
 
 
@@ -69,7 +70,11 @@ namespace Synchronization_Homework.Domain.ViewModels
             {
 
             });
-           
+
+            TransferCommand = new RelayCommand((O) =>
+            {
+
+            });
         }
     }
 }
