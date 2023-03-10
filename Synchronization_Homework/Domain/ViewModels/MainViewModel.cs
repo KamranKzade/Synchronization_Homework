@@ -70,19 +70,38 @@ namespace Synchronization_Homework.Domain.ViewModels
         private readonly IRepository<Transfer> _transferRepository;
 
 
+
+
         public MainViewModel()
         {
             _accountRepository = new AccountRepository();
             _transferRepository = new TransferRepository();
 
+
+
             LoadDataCommand = new RelayCommand((O) =>
             {
                 Thread thread = new Thread(() =>
                 {
-                    var customer = _accountRepository.GetDataForPan(PANCart);
-                    HumanName = customer.Name;
-                    HumanSurname = customer.Surname;
-                    HesabdakiMebleg = _accountRepository.GetDataForPanForAccount(PANCart).Balance.ToString();
+                    if (!PANCart.All(c => "-0123456789".Contains(c)))
+                        MessageBox.Show($"PAN -in icerisinde Herf ola bilmez", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    else if (PANCart.Length != 19)
+                        MessageBox.Show($"PAN - in uzunlugu 19 a Beraber olamlidir\nMeselen: \n4169-7315-1525-0258", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    else
+                    {
+                        try
+                        {
+                            var customer = _accountRepository.GetDataForPan(PANCart);
+
+                            HumanName = customer.Name;
+                            HumanSurname = customer.Surname;
+                            HesabdakiMebleg = _accountRepository.GetDataForPanForAccount(PANCart).Balance.ToString();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
 
                 });
                 thread.Start();
@@ -113,21 +132,43 @@ namespace Synchronization_Homework.Domain.ViewModels
 
                 //thread.Start();
 
+
                 Thread thread1 = new Thread((o) =>
                 {
-                    decimal bankValue = 0;
-
-                    var transferValue = decimal.Parse(TransferValue) / 10;
-
-                    while (decimal.Parse(TransferValue) >= 0)
+                    if (decimal.Parse(TransferValue) < 0)
                     {
-                        TransferValue = (decimal.Parse(TransferValue) - transferValue).ToString();
-                        
-                        Thread.Sleep(1000);
-
-                        BankValue += (decimal.Parse(BankValue) + transferValue).ToString();
+                        MessageBox.Show($"Transfer Edilen Mebleg menfi ola bilmez!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        TransferValue = string.Empty;
                     }
+                    else
+                    {
+                        try
+                        {
+                            decimal bankValue = 0;
 
+                            var transferValue = decimal.Parse(TransferValue) / 10;
+
+                            while (decimal.Parse(TransferValue) > 0)
+                            {
+                                TransferValue = (decimal.Parse(TransferValue) - transferValue).ToString();
+
+                                Thread.Sleep(1000);
+
+                                if (BankValue != null)
+                                {
+                                    //  BankValue = string.Empty;
+                                    BankValue = (decimal.Parse(BankValue) + transferValue).ToString();
+                                }
+                                else
+                                    BankValue += (transferValue).ToString();
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
                 });
 
                 thread1.Start();

@@ -170,6 +170,7 @@
             <TextBox Grid.Column="2"
                      Style="{StaticResource textbox_sytle}"
                      IsEnabled="False"
+                     HorizontalContentAlignment="Center"
                      Text="{Binding BankValue}"
                      />
         </Grid>
