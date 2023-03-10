@@ -1,15 +1,13 @@
-﻿using Synchronization_Homework.Commands;
-using Synchronization_Homework.DataAccess;
-using Synchronization_Homework.DataAccess.Repositories;
-using Synchronization_Homework.Domain.Abstractions;
-using Synchronization_Homework.ViewModels;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
+using Synchronization_Homework.Commands;
+using Synchronization_Homework.ViewModels;
+using Synchronization_Homework.DataAccess;
+using Synchronization_Homework.Domain.Abstractions;
+using Synchronization_Homework.DataAccess.Repositories;
+
 
 namespace Synchronization_Homework.Domain.ViewModels
 {
@@ -22,40 +20,40 @@ namespace Synchronization_Homework.Domain.ViewModels
             set { _panCart = value; OnPropertyChanged(); }
         }
 
+        
         private string _humanName;
-
         public string HumanName
         {
             get { return _humanName; }
             set { _humanName = value; OnPropertyChanged(); }
         }
 
-        private string _humanSurname;
 
+        private string _humanSurname;
         public string HumanSurname
         {
             get { return _humanSurname; }
             set { _humanSurname = value; OnPropertyChanged(); }
         }
 
-        private string _hesabdakiMebleg;
 
+        private string _hesabdakiMebleg;
         public string HesabdakiMebleg
         {
             get { return _hesabdakiMebleg; }
             set { _hesabdakiMebleg = value; OnPropertyChanged(); }
         }
 
+        
         private string _transferValue;
-
         public string TransferValue
         {
             get { return _transferValue; }
             set { _transferValue = value; OnPropertyChanged(); }
         }
 
-        private string _bankValue;
 
+        private string _bankValue;
         public string BankValue
         {
             get { return _bankValue; }
@@ -72,11 +70,11 @@ namespace Synchronization_Homework.Domain.ViewModels
 
         static object obj = new object();
 
+
         public MainViewModel()
         {
             _accountRepository = new AccountRepository();
             _transferRepository = new TransferRepository();
-
 
 
             LoadDataCommand = new RelayCommand((O) =>
@@ -102,14 +100,13 @@ namespace Synchronization_Homework.Domain.ViewModels
                             MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                     }
-
                 });
                 thread.Start();
             });
 
+
             TransferCommand = new RelayCommand((O) =>
             {
-
                 Thread thread = new Thread(() =>
                 {
                     lock (obj)
@@ -118,8 +115,8 @@ namespace Synchronization_Homework.Domain.ViewModels
                         account.Balance -= decimal.Parse(TransferValue);
 
                         _accountRepository.UpdateData(account);
-
                         var id = _transferRepository.GetAllData().LastOrDefault().Id;
+
 
                         Transfer transfer = new Transfer
                         {
@@ -130,24 +127,22 @@ namespace Synchronization_Homework.Domain.ViewModels
                             Description = account.Description,
                         };
                         _transferRepository.AddData(transfer);
-
                     }
                 });
 
                 thread.Start();
 
-
                 Thread thread1 = new Thread((o) =>
                 {
                     if (decimal.Parse(TransferValue) < 0)
                     {
-                        MessageBox.Show($"Transfer Edilen Mebleg menfi ola bilmez!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                         TransferValue = string.Empty;
+                        MessageBox.Show($"Transfer Edilen Mebleg menfi ola bilmez!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else if (decimal.Parse(TransferValue) > decimal.Parse(HesabdakiMebleg))
                     {
-                        MessageBox.Show($"Transfer Edilen Mebleg Hesabdaki meblegden boyuk ola bilmez!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                         TransferValue = string.Empty;
+                        MessageBox.Show($"Transfer Edilen Mebleg Hesabdaki meblegden boyuk ola bilmez!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else
                     {
@@ -166,13 +161,11 @@ namespace Synchronization_Homework.Domain.ViewModels
 
                                     if (BankValue != null)
                                     {
-                                        //  BankValue = string.Empty;
                                         BankValue = (decimal.Parse(BankValue) + transferValue).ToString();
                                     }
                                     else
                                         BankValue += (transferValue).ToString();
                                 }
-
                             }
                         }
                         catch (Exception ex)
@@ -181,11 +174,9 @@ namespace Synchronization_Homework.Domain.ViewModels
                         }
                     }
                 });
-
                 thread1.Start();
 
             });
-
         }
     }
 }
