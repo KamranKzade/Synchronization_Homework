@@ -70,7 +70,7 @@ namespace Synchronization_Homework.Domain.ViewModels
         private readonly IRepository<Transfer> _transferRepository;
 
 
-
+        static object obj = new object();
 
         public MainViewModel()
         {
@@ -109,28 +109,32 @@ namespace Synchronization_Homework.Domain.ViewModels
 
             TransferCommand = new RelayCommand((O) =>
             {
+
                 Thread thread = new Thread(() =>
                 {
-                    var account = _accountRepository.GetDataForPanForAccount(PANCart);
-                    account.Balance -= decimal.Parse(TransferValue);
-
-                    _accountRepository.UpdateData(account);
-
-                    var id = _transferRepository.GetAllData().LastOrDefault().Id;
-
-                    Transfer transfer = new Transfer
+                    lock (obj)
                     {
-                        Id = ++id,
-                        TransferTime = DateTime.Now,
-                        AccountId = account.Id,
-                        Amount = decimal.Parse(TransferValue),
-                        Description = account.Description,
-                    };
-                    _transferRepository.AddData(transfer);
+                        var account = _accountRepository.GetDataForPanForAccount(PANCart);
+                        account.Balance -= decimal.Parse(TransferValue);
 
+                        _accountRepository.UpdateData(account);
+
+                        var id = _transferRepository.GetAllData().LastOrDefault().Id;
+
+                        Transfer transfer = new Transfer
+                        {
+                            Id = ++id,
+                            TransferTime = DateTime.Now,
+                            AccountId = account.Id,
+                            Amount = decimal.Parse(TransferValue),
+                            Description = account.Description,
+                        };
+                        _transferRepository.AddData(transfer);
+
+                    }
                 });
 
-                //thread.Start();
+                thread.Start();
 
 
                 Thread thread1 = new Thread((o) =>
@@ -149,24 +153,27 @@ namespace Synchronization_Homework.Domain.ViewModels
                     {
                         try
                         {
-                            decimal bankValue = 0;
-                            var transferValue = decimal.Parse(TransferValue) / 10;
-
-                            while (decimal.Parse(TransferValue) > 0)
+                            lock (obj)
                             {
-                                TransferValue = (decimal.Parse(TransferValue) - transferValue).ToString();
+                                decimal bankValue = 0;
+                                var transferValue = decimal.Parse(TransferValue) / 10;
 
-                                Thread.Sleep(1000);
-
-                                if (BankValue != null)
+                                while (decimal.Parse(TransferValue) > 0)
                                 {
-                                    //  BankValue = string.Empty;
-                                    BankValue = (decimal.Parse(BankValue) + transferValue).ToString();
-                                }
-                                else
-                                    BankValue += (transferValue).ToString();
-                            }
+                                    TransferValue = (decimal.Parse(TransferValue) - transferValue).ToString();
 
+                                    Thread.Sleep(1000);
+
+                                    if (BankValue != null)
+                                    {
+                                        //  BankValue = string.Empty;
+                                        BankValue = (decimal.Parse(BankValue) + transferValue).ToString();
+                                    }
+                                    else
+                                        BankValue += (transferValue).ToString();
+                                }
+
+                            }
                         }
                         catch (Exception ex)
                         {
