@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="BankDataClasses">
+  <DataContextMoniker Name="/BankDataClassesDataContext" />
+  <nestedChildShapes>
+    <classShape Id="62abbc2c-dd58-4641-8312-52faf996ea74" absoluteBounds="3.5, 1, 2, 1.9631982421875003">
+      <DataClassMoniker Name="/BankDataClassesDataContext/Account" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fc939fee-817c-402b-8e15-fdcdc306e993" absoluteBounds="3.515, 1.46, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5c3222f2-5c0f-4fa7-9043-c90fafe26d73" absoluteBounds="0.75, 0.875, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/BankDataClassesDataContext/Customer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9dae77bd-beef-43d2-bd26-ee626cce030d" absoluteBounds="0.765, 1.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d8d692f3-4afc-4394-b3e3-a9a2c533023d" absoluteBounds="6.25, 1.125, 2, 1.7708968098958329">
+      <DataClassMoniker Name="/BankDataClassesDataContext/Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f1b11c23-3cd3-49da-9f1a-d29dbdf64d48" absoluteBounds="6.265, 1.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 1.98159912109375); (3.5 : 1.98159912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BankDataClassesDataContext/Customer/Customer_Account" />
+      <nodes>
+        <classShapeMoniker Id="5c3222f2-5c0f-4fa7-9043-c90fafe26d73" />
+        <classShapeMoniker Id="62abbc2c-dd58-4641-8312-52faf996ea74" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 2.01044840494792); (6.25 : 2.01044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BankDataClassesDataContext/Account/Account_Transfer" />
+      <nodes>
+        <classShapeMoniker Id="62abbc2c-dd58-4641-8312-52faf996ea74" />
+        <classShapeMoniker Id="d8d692f3-4afc-4394-b3e3-a9a2c533023d" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

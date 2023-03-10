@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,7 +56,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataAccess\BankDataClasses.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BankDataClasses.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Repositories\AccountRepository.cs" />
+    <Compile Include="DataAccess\Repositories\CustomerRepository.cs" />
+    <Compile Include="DataAccess\Repositories\TransferRepository.cs" />
+    <Compile Include="Domain\Abstractions\IAccountRepository.cs" />
+    <Compile Include="Domain\Abstractions\ICustomerRepository.cs" />
     <Compile Include="Domain\Abstractions\IRepositories.cs" />
+    <Compile Include="Domain\Abstractions\ITransferRepository.cs" />
     <Compile Include="Domain\ViewModels\BaseViewModel.cs" />
     <Page Include="Domain\Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -102,6 +114,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="DataAccess\BankDataClasses.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>BankDataClasses.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataAccess\BankDataClasses.dbml.layout">
+      <DependentUpon>BankDataClasses.dbml</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -110,9 +130,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataAccess\Repositories\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\load.png" />
   </ItemGroup>
@@ -121,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\bank-building.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
