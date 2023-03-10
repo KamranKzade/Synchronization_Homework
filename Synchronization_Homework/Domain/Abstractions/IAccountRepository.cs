@@ -5,6 +5,7 @@ namespace Synchronization_Homework.Domain.Abstractions
 {
     public interface IAccountRepository:IRepository<Account>
     {
-        Customer GetDataForPan(Account account, Customer customer);
+        Customer GetDataForPan(string Pan);
+        Account GetDataForPanForAccount(string Pan);
     }
 }

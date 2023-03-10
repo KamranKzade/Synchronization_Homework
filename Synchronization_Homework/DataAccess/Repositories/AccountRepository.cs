@@ -40,6 +40,7 @@ namespace Synchronization_Homework.DataAccess.Repositories
             return _dataContext.Accounts.SingleOrDefault(a => a.Id == id);
         }
 
+
         public void UpdateData(Account data)
         {
             var item = _dataContext.Accounts.SingleOrDefault(a => a.Id == data.Id);
@@ -57,16 +58,16 @@ namespace Synchronization_Homework.DataAccess.Repositories
             _dataContext.SubmitChanges();
         }
 
-        public Customer GetDataForPan(Account account, Customer customer)
+        public Customer GetDataForPan(string Pan)
         {
-           var item = from a in _dataContext.Accounts
-                      join c in _dataContext.Customers
-                      on a.Id equals c.Id
-                      where a.PAN == account.PAN
-                      select c;
-            
+            var item = _dataContext.Accounts.SingleOrDefault(a => a.PAN == Pan);
 
-            return (Customer)item;
+            return _dataContext.Customers.SingleOrDefault(c => c.Id == item.CustomerId);
+        }
+
+        public Account GetDataForPanForAccount(string Pan)
+        {
+            return _dataContext.Accounts.SingleOrDefault(a=>a.PAN == Pan);
         }
     }
 }

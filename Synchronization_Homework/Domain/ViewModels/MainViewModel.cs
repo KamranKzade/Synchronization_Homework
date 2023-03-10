@@ -1,9 +1,13 @@
 ﻿using Synchronization_Homework.Commands;
+using Synchronization_Homework.DataAccess;
+using Synchronization_Homework.DataAccess.Repositories;
+using Synchronization_Homework.Domain.Abstractions;
 using Synchronization_Homework.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -47,7 +51,7 @@ namespace Synchronization_Homework.Domain.ViewModels
         public string TransferValue
         {
             get { return _transferValue; }
-            set { _transferValue = value;OnPropertyChanged(); }
+            set { _transferValue = value; OnPropertyChanged(); }
         }
 
         private string _bankValue;
@@ -55,20 +59,31 @@ namespace Synchronization_Homework.Domain.ViewModels
         public string BankValue
         {
             get { return _bankValue; }
-            set { _bankValue = value;OnPropertyChanged(); }
+            set { _bankValue = value; OnPropertyChanged(); }
         }
 
         public RelayCommand TransferCommand { get; set; }
         public RelayCommand LoadDataCommand { get; set; }
 
 
+        private readonly AccountRepository _accountRepository;
 
 
         public MainViewModel()
         {
+            _accountRepository = new AccountRepository();
+
             LoadDataCommand = new RelayCommand((O) =>
             {
+                Thread thread = new Thread(() =>
+                {
+                    var customer = _accountRepository.GetDataForPan(PANCart);
+                    HumanName = customer.Name;
+                    HumanSurname= customer.Surname;
+                    HesabdakiMebleg = _accountRepository.GetDataForPanForAccount(PANCart).Balance.ToString();
 
+                });
+                thread.Start();
             });
 
             TransferCommand = new RelayCommand((O) =>

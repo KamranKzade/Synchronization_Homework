@@ -14,9 +14,9 @@
     
     <Window.Background>
         <LinearGradientBrush>
-            <GradientStop Color="Black" Offset="0"/>
-            <GradientStop Color="Blue" Offset="0.5"/>
-            <GradientStop Color="White" Offset="1"/>
+            <GradientStop Color="Red" Offset="0.5"/>
+            <GradientStop Color="Blue" Offset="0"/>
+            <GradientStop Color="Yellow" Offset="1"/>
         </LinearGradientBrush>
     </Window.Background>
 
@@ -97,13 +97,15 @@
                          Grid.Column="0"
                          IsEnabled="False"
                          Text="{Binding HumanName}"
-                         Style="{StaticResource textbox_sytle}"/>
+                         Style="{StaticResource textbox_sytle}"
+                         FontSize="22"/>
 
                 <TextBox Grid.Row="1"
                          Grid.Column="1"
                          IsEnabled="False"
                          Text="{Binding HumanSurname}"
-                         Style="{StaticResource textbox_sytle}"/>
+                         Style="{StaticResource textbox_sytle}"
+                         FontSize="22"/>
             </Grid>
 
             <Grid Grid.Row="1">
@@ -119,7 +121,8 @@
                 <TextBox Grid.Row="1"
                          Style="{StaticResource  textbox_sytle}"
                          IsEnabled="False"
-                         Text="{Binding HesabdakiMebleg}"/>
+                         Text="{Binding HesabdakiMebleg}"
+                         FontSize="22"/>
                 
             </Grid>
             
